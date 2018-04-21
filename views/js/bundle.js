@@ -26406,16 +26406,39 @@ var Login = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (Login.__proto__ || Object.getPrototypeOf(Login)).call(this, props));
 
-        state = [];
+        _this.state = {
+            username: '',
+            password: ''
+        };
+        _this.signLogin = _this.signLogin.bind(_this);
+        _this.usernameAction = _this.usernameAction.bind(_this);
+        _this.passwordAction = _this.passwordAction.bind(_this);
         return _this;
     }
 
     _createClass(Login, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            _axios2.default.get('/login').then(function (res) {
-                console.log(res);
+        key: 'signLogin',
+        value: function signLogin() {
+            _axios2.default.post('http://localhost:3000/login', {
+                name: this.state.username,
+                password: this.state.password
+            }).then(function (response) {
+                console.log('success');
+            }).catch(function (error) {
+                console.log('error ' + error);
             });
+        }
+    }, {
+        key: 'usernameAction',
+        value: function usernameAction(val) {
+            this.setState({ username: val.target.value });
+            console.log(this.state.username);
+        }
+    }, {
+        key: 'passwordAction',
+        value: function passwordAction(val) {
+            this.setState({ password: val.target.value });
+            console.log(this.state.password);
         }
     }, {
         key: 'render',
@@ -26433,21 +26456,21 @@ var Login = function (_Component) {
                     ),
                     _react2.default.createElement(
                         'label',
-                        { 'for': 'inputEmail', className: 'sr-only' },
+                        { className: 'sr-only' },
                         'Email address'
                     ),
-                    _react2.default.createElement('input', { type: 'text', id: 'inputEmail', className: 'form-control', placeholder: 'Email address', required: true, autofocus: true }),
+                    _react2.default.createElement('input', { type: 'text', id: 'inputEmail', value: this.state.username, onChange: this.usernameAction, className: 'form-control', placeholder: 'Email address', required: true }),
                     _react2.default.createElement(
                         'label',
-                        { 'for': 'inputPassword', className: 'sr-only' },
+                        { className: 'sr-only' },
                         'Password'
                     ),
-                    _react2.default.createElement('input', { type: 'password', id: 'inputPassword', className: 'form-control', placeholder: 'Password', required: true }),
-                    _react2.default.createElement(
-                        'button',
-                        { 'class': 'btn btn-lg btn-primary btn-block' },
-                        'Sign in'
-                    )
+                    _react2.default.createElement('input', { type: 'password', id: 'inputPassword', value: this.state.password, onChange: this.passwordAction, className: 'form-control', placeholder: 'Password', required: true })
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { className: 'btn btn-lg btn-primary btn-block', onClick: this.signLogin },
+                    'Sign in'
                 )
             );
         }
